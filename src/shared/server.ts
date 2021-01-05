@@ -5,7 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 import routes from './routes';
-import '@shared/infra/typeorm';
+import '@shared/typeorm';
 import '@shared/container';
 
 const server = express();
@@ -29,6 +29,6 @@ server.use(errors());
 // });
 
 server.listen(process.env.PORT, () => {
-    // eslint-disable-next-line no-console
-    console.log(`✅ - back-end rodando! na porta ${process.env.PORT}`);
+  // eslint-disable-next-line no-console
+  console.log(`✅ - back-end rodando! na porta ${process.env.PORT}`);
 });

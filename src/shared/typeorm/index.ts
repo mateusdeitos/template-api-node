@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createConnection } from 'typeorm';
 import config from '@config/database';
 
