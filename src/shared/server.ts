@@ -7,6 +7,7 @@ import 'express-async-errors';
 import routes from './routes';
 import '@shared/typeorm';
 import '@shared/container';
+import { errorMiddleware } from './errors/middleware/errorMiddleware';
 
 const server = express();
 server.use(cors());
@@ -14,19 +15,7 @@ server.use(express.json());
 server.use(routes);
 
 server.use(errors());
-// server.use((err: Error, request: Request, response: Response, _: NextFunction) => {
-//   if (err instanceof AppError) {
-//     return response.status(err.statusCode).json({
-//       status: 'error',
-//       message: err.message,
-//     });
-//   }
-
-//   return response.status(500).json({
-//     status: 'error',
-//     message: err.message,
-//   });
-// });
+server.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console
