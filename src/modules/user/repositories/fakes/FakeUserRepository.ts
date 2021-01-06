@@ -13,8 +13,12 @@ export default class FakeUserRepository implements IUserRepository {
   }
 
   public async save(user: User): Promise<User> {
-    saveEntityInRepository(this.ormRepository, user);
-    return user;
+    const newUser = {
+      ...user,
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
+    return saveEntityInRepository(this.ormRepository, newUser);
   }
 
   public async findByProp(
