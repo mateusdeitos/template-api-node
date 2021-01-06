@@ -21,6 +21,6 @@ export const errorMiddleware = (
 
   return response.status(500).json({
     status: 'error',
-    message: err.getMessage(),
+    message: err.message,
   });
 };

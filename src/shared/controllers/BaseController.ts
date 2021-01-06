@@ -3,7 +3,11 @@ import { Response } from 'express';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type responseBodyType = any | any[];
 export default class BaseController {
-  private readonly response: { body: responseBodyType; status: number };
+  protected response: { body: responseBodyType; status: number };
+
+  constructor() {
+    this.response = { body: {}, status: 200 };
+  }
 
   protected async getResponse(response: Response): Promise<Response> {
     return response

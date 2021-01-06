@@ -15,9 +15,9 @@ export default class UserController
 
     const newUser = await createUserService.executa(userData);
 
-    this.setResponseStatus(200);
-    this.setResponseBody(newUser);
+    super.setResponseStatus(200);
+    super.setResponseBody(newUser);
 
-    return this.getResponse(response);
+    return super.getResponse(response);
   }
 }

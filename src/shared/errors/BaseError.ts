@@ -1,8 +1,8 @@
 export default class Error {
   constructor(
-    private statusCode: number,
-    private message: string,
-    private data?: unknown,
+    readonly statusCode: number,
+    readonly message: string,
+    readonly data?: unknown,
   ) {}
 
   public getStatusCode(): number {
