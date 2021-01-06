@@ -3,3 +3,4 @@ node_modules
 ormconfig.json
 dist
 coverage
+ormlogs.log

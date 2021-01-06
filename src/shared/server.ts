@@ -1,12 +1,12 @@
-import 'reflect-metadata';
-import 'dotenv/config';
-import { errors } from 'celebrate';
 import express from 'express';
 import cors from 'cors';
 import 'express-async-errors';
-import routes from './routes';
+import 'reflect-metadata';
+import 'dotenv/config';
 import '@shared/typeorm';
+import { errors } from 'celebrate';
 import '@shared/container';
+import routes from './routes';
 import { errorMiddleware } from './errors/middleware/errorMiddleware';
 
 const server = express();

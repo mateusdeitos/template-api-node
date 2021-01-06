@@ -17,6 +17,6 @@ export default class UserRepository implements IUserRepository {
     prop: keyof User,
     value: unknown,
   ): Promise<User | undefined> {
-    return this.ormRepository.findOne({ where: { prop: value } });
+    return this.ormRepository.findOne({ where: { [prop]: value } });
   }
 }
