@@ -4,7 +4,6 @@ import { HASH_PROVIDER_TOKEN } from '@shared/providers/HashProvider';
 import IHashProvider from '@shared/providers/HashProvider/dto/IHashProvider';
 import { JWT_PROVIDER_TOKEN } from '@shared/providers/JWTProvider';
 import IJWTProvider from '@shared/providers/JWTProvider/dto/IJWTProvider';
-import { throwIfTestFail } from '@shared/utils/validationUtils';
 import { inject, injectable } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 import User from '../entities/typeorm/User';
@@ -29,24 +28,17 @@ export default class AuthenticateUserService {
     email,
     password,
   }: IAuthenticateUserDTO): Promise<User> {
-    const user = await throwIfTestFail({
-      test: this.userRepository.findByProp('email', email),
-      condition: false,
-      message: 'Usuário não encontrado',
-      statusCode: 404,
-      Exception: ServiceValidationException,
-    });
-
-    if (user) {
-      await throwIfTestFail({
-        test: this.hashProvider.compareHash(password, user.password),
-        condition: false,
-        message: 'E-mail ou senha incorreto(s)',
-        statusCode: 400,
-        Exception: ServiceValidationException,
-      });
+    const user = await this.userRepository.findByProp('email', email);
+    if (!user) {
+      throw new ServiceValidationException("Usuário não encontrado", 'NOT_FOUND');
     }
-    return classToClass(user) || new User();
+
+    const {password: userPassword} = user;
+    if (!this.hashProvider.compareHash(password, userPassword)) {
+      throw new ServiceValidationException("E-mail ou senha incorreto(s)", 'BAD_REQUEST');
+    }
+
+    return classToClass(user);
   }
 
   public async execute(
