@@ -19,7 +19,7 @@ describe('Criação de Usuários', () => {
   });
 
   it('Deve poder criar um usuário', async () => {
-    const user = await createUserService.executa({
+    const user = await createUserService.execute({
       ...new User(),
       nome: 'Joãozinho',
       password: 'teste1234',
@@ -29,14 +29,14 @@ describe('Criação de Usuários', () => {
     expect(user.id).toBe(1);
   });
   it('Não deve poder criar 2 usuários com o mesmo e-mail', async () => {
-    await createUserService.executa({
+    await createUserService.execute({
       ...new User(),
       nome: 'Joãozinho',
       password: 'teste1234',
       email: 'joaozinho@teste123.com.br',
     });
     await expect(
-      createUserService.executa({
+      createUserService.execute({
         ...new User(),
         nome: 'Joãozinho',
         password: 'teste1234',

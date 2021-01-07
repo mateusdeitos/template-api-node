@@ -1,35 +1,29 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const getNextIdInArray = (array: any[]): number =>
+type idRequired = { id: number };
+export const getNextIdInArray = <T extends idRequired>(array: T[]): number =>
   array.length === 0 ? 1 : Math.max(...array.map(obj => obj.id)) + 1;
 
-export const saveEntityInRepository = (repository: any[], entity: any): any => {
-  if (entity.id) {
-    const index = repository.findIndex(
-      storedEntity => storedEntity.id === entity.id,
-    );
+export const saveObjectInRepository = <T extends idRequired>(
+  repository: T[],
+  object: T,
+): T => {
+  const { id } = object;
+  if (id) {
+    const index = repository.findIndex(storedObject => storedObject.id === id);
     repository.splice(index, 1);
   }
-  const newEntity = {
-    ...entity,
-    id: entity.id ?? getNextIdInArray(repository),
+  const newObject = {
+    ...object,
+    id: id ?? getNextIdInArray(repository),
   };
-  repository.push(newEntity);
+  repository.push(newObject);
 
-  return newEntity;
+  return newObject;
 };
 
-export const findEntityInRepositoryByProp = (
-  repository: any[],
-  props: { propName: string; propValue: unknown },
-): any => {
+export const findEntityInRepositoryByProp = <T>(
+  repository: T[],
+  props: { propName: keyof T; propValue: T[keyof T] },
+): T | undefined => {
   const { propName, propValue } = props;
-  const index = repository.findIndex(entity => {
-    if (entity[propName]) {
-      return entity[propName] === propValue;
-    }
-    return false;
-  });
-
-  return repository[index];
+  return repository.find(entity => entity[propName] === propValue);
 };
