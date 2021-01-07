@@ -30,12 +30,18 @@ export default class AuthenticateUserService {
   }: IAuthenticateUserDTO): Promise<User> {
     const user = await this.userRepository.findByProp('email', email);
     if (!user) {
-      throw new ServiceValidationException("Usuário não encontrado", 'NOT_FOUND');
+      throw new ServiceValidationException(
+        'Usuário não encontrado',
+        'NOT_FOUND',
+      );
     }
 
-    const {password: userPassword} = user;
+    const { password: userPassword } = user;
     if (!this.hashProvider.compareHash(password, userPassword)) {
-      throw new ServiceValidationException("E-mail ou senha incorreto(s)", 'BAD_REQUEST');
+      throw new ServiceValidationException(
+        'E-mail ou senha incorreto(s)',
+        'BAD_REQUEST',
+      );
     }
 
     return classToClass(user);
