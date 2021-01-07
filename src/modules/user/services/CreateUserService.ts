@@ -2,7 +2,7 @@ import { USER_REPOSITORY_TOKEN } from '@shared/container';
 import ServiceValidationException from '@shared/errors/ServiceValidationException';
 import { HASH_PROVIDER_TOKEN } from '@shared/providers/HashProvider';
 import IHashProvider from '@shared/providers/HashProvider/dto/IHashProvider';
-import { throwIfSome } from '@shared/utils/validationUtils';
+import { throwIfSomeTestFails } from '@shared/utils/validationUtils';
 import { inject, injectable } from 'tsyringe';
 import { ICreateUserDTO } from '../dto/ICreateUserDTO';
 import User from '../entities/typeorm/User';
@@ -19,7 +19,7 @@ export default class CreateUserService {
 
   private async validadeUser(user: ICreateUserDTO): Promise<void> {
     const { email } = user;
-    await throwIfSome(
+    await throwIfSomeTestFails(
       [
         {
           test: this.userRepository.findByProp('email', email),
