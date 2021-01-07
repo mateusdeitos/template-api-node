@@ -6,6 +6,7 @@ import { JWT_PROVIDER_TOKEN } from '@shared/providers/JWTProvider';
 import IJWTProvider from '@shared/providers/JWTProvider/dto/IJWTProvider';
 import { inject, injectable } from 'tsyringe';
 import { classToClass } from 'class-transformer';
+import authConfig from '@config/auth';
 import User from '../entities/typeorm/User';
 import { IUserRepository } from '../repositories/dto/IUserRepository';
 import {
@@ -37,7 +38,7 @@ export default class AuthenticateUserService {
     }
 
     const { password: userPassword } = user;
-    if (!this.hashProvider.compareHash(password, userPassword)) {
+    if (!(await this.hashProvider.compareHash(password, userPassword))) {
       throw new ServiceValidationException(
         'E-mail ou senha incorreto(s)',
         'BAD_REQUEST',
@@ -51,10 +52,10 @@ export default class AuthenticateUserService {
     data: IAuthenticateUserDTO,
   ): Promise<IResponseAuthenticationDTO> {
     const user = await this.validateAuth(data);
-
+    const { expiresIn, secretOrPrivateKey } = authConfig;
     const token = await this.jwtProvider.generateJWTToken({
-      options: { expiresIn: '30d', subject: user.id.toString() },
-      secretOrPrivateKey: process.env.SEGREDO || 'some-secret',
+      options: { expiresIn, subject: user.id.toString() },
+      secretOrPrivateKey,
     });
 
     return {
