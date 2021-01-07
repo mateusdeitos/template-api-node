@@ -4,13 +4,9 @@ import { HASH_PROVIDER_TOKEN } from '@shared/providers/HashProvider';
 import IHashProvider from '@shared/providers/HashProvider/dto/IHashProvider';
 import { JWT_PROVIDER_TOKEN } from '@shared/providers/JWTProvider';
 import IJWTProvider from '@shared/providers/JWTProvider/dto/IJWTProvider';
-import {
-  throwIfSomeTestFails,
-  throwIfTestFail,
-} from '@shared/utils/validationUtils';
+import { throwIfTestFail } from '@shared/utils/validationUtils';
 import { inject, injectable } from 'tsyringe';
 import { classToClass } from 'class-transformer';
-import { ICreateUserDTO } from '../dto/ICreateUserDTO';
 import User from '../entities/typeorm/User';
 import { IUserRepository } from '../repositories/dto/IUserRepository';
 import {
