@@ -7,4 +7,9 @@ export const UserValidationSchema = {
     password: Joi.string().required().min(6),
     password_confirmation: Joi.string().valid(Joi.ref('password')),
   }),
+
+  login: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required().min(6),
+  }),
 };
