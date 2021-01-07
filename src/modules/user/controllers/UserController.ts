@@ -13,11 +13,8 @@ export default class UserController
 
     const createUserService = container.resolve(CreateUserService);
 
-    const newUser = await createUserService.executa(userData);
+    const newUser = await createUserService.execute(userData);
 
-    super.setResponseStatus(200);
-    super.setResponseBody(newUser);
-
-    return super.getResponse(response);
+    return super.getResponse(request, response.status(200).json(newUser));
   }
 }

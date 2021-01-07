@@ -9,14 +9,14 @@
     "dev:server": "clear && ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/server.ts",
     "start": "ts-node src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "test": "clear && jest --coverage --watchAll",
+    "test": "clear && jest --coverage",
     "lint": "eslint --fix --ext .ts,.tsx ."
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.6",
-    "@types/hapi__joi": "^17.1.4",
+    "@types/hapi__joi": "^17.1.6",
     "@types/ioredis": "^4.17.3",
     "@types/jest": "^26.0.4",
     "@types/jsonwebtoken": "^8.5.0",
@@ -36,6 +36,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "bcryptjs": "^2.4.3",
     "celebrate": "^12.1.2",
     "class-transformer": "^0.3.1",
