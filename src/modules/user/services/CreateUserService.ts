@@ -18,9 +18,16 @@ export default class CreateUserService {
 
   private async validadeUser(user: ICreateUserDTO): Promise<void> {
     const { email } = user;
-    const existeUserComMesmoEmail = await this.userRepository.findByProp('email', email);
+    const existeUserComMesmoEmail = await this.userRepository.findByProp(
+      'email',
+      email,
+    );
     if (existeUserComMesmoEmail) {
-      throw new ServiceValidationException("Já existe um usuário com esse e-mail", 'CONFLICT', [{ field: 'email', value: email }]);
+      throw new ServiceValidationException(
+        'Já existe um usuário com esse e-mail',
+        'CONFLICT',
+        [{ field: 'email', value: email }],
+      );
     }
   }
 
