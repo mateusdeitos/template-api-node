@@ -1,4 +1,4 @@
-export const throwIf = async <E, T, D>(
+export const throwIfTestFail = async <E, T, D>(
   props: {
     test: Promise<T>;
     statusCode?: number;
@@ -26,7 +26,7 @@ export const throwIf = async <E, T, D>(
   }
 };
 
-export const throwIfSome = async <E, T, D>(
+export const throwIfSomeTestFails = async <E, T, D>(
   props: {
     test: Promise<T>;
     statusCode?: number;
@@ -41,7 +41,10 @@ export const throwIfSome = async <E, T, D>(
   try {
     await Promise.all(
       props.map(async ({ message, statusCode, data, test }) =>
-        throwIf({ message, statusCode, data, test, Exception }, condition),
+        throwIfTestFail(
+          { message, statusCode, data, test, Exception },
+          condition,
+        ),
       ),
     );
   } catch (error) {
