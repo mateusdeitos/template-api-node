@@ -49,11 +49,8 @@ export default class AuthenticateUserService {
         statusCode: 400,
         Exception: ServiceValidationException,
       });
-
-      return classToClass(user);
     }
-
-    return new User();
+    return classToClass(user) || new User();
   }
 
   public async execute(
