@@ -9,3 +9,5 @@ export enum HTTPStatusCodeEnum {
   SUCCESS_NO_CONTENT = 204,
   INTERNAL_ERROR = 500,
 }
+
+export type HTTPStatusType = keyof typeof HTTPStatusCodeEnum;

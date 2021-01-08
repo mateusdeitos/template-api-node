@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import ServiceValidationException from '../ServiceValidationException';
 import Error from '../BaseError';
+import ForbiddenRouteException from '../ForbiddenRouteException';
+import { HTTPStatusCodeEnum } from '../dto/HTTPStatusCodeEnum';
 
 export const errorMiddleware = (
   err: Error,
@@ -16,8 +18,15 @@ export const errorMiddleware = (
     };
     return response.status(err.getStatusCode()).json(errorData);
   }
+  if (err instanceof ForbiddenRouteException) {
+    const errorData = {
+      status: 'ForbiddenRouteError',
+      message: err.getMessage(),
+    };
+    return response.status(err.getStatusCode()).json(errorData);
+  }
 
-  return response.status(500).json({
+  return response.status(HTTPStatusCodeEnum.INTERNAL_ERROR).json({
     status: 'error',
     message:
       process.env.NODE_ENV === 'dev' ? err.message : 'Ocorreu um erro interno.',
