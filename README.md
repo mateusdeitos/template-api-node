@@ -48,7 +48,8 @@ As dependências de um `Service` são injetadas no mesmo utilizando a lib `tsyri
 É importante que a interface de dados que o método `execute` receber seja o mesmo tipo que será passado para o repositório principal desse `Service`, exemplo: No `CreateUserService`, foi utilizada a interface `ICreateUserDTO` como tipagem dos dados do método `execute` e essa é a mesma interface do método `save` do `UserRepositories`.
 
 
-* **Rotas:** As requisições dos clientes são recebidas aqui, todas as rotas da aplicação são importadas no arquivo `./src/shared/routes/index.ts`
+### Rotas
+As requisições dos clientes são recebidas aqui, todas as rotas da aplicação são importadas no arquivo `./src/shared/routes/index.ts`
 
 ### Testes
 Dentro da pasta services de cada módulo há uma pasta contendo os arquivos de teste. Cada Service possui um arquivo de teste respectivo, sugiro sempre que for criar um novo service, iniciar criando-o e criar o teste respectivo antes de criar o Controller, rotas e etc. Seguindo os conceitos de TDD.
@@ -97,7 +98,7 @@ Após criar o repositório rode `yarn` para instalar todas as dependências.
 
 ```bash
 # Criação do conteiner
-docker run --name mariadb -e MYSQL_ROOT_PASSWORD=<root-pass> -p 1430:3306 --restart always -d mariadb
+docker run --name mariadb -e MYSQL_ROOT_PASSWORD=<root-pass> -p 1234:3306 --restart always -d mariadb
 # A tag "--restart always" reinicia o container automaticamente caso ele cair.
 
 # Acessar o conteiner
