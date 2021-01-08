@@ -13,6 +13,8 @@ Esse repositório tem o objetivo de auxiliar no ponto de partida da criação de
 A API segue a lógica da imagem abaixo:
 ![img](./.github/prints/api-estrutura.png)
 
+Abaixo será descrita a estrutura de pastas do código da API
+
 Todo o código da API se encontra na pasta `./src`:
 ## @types
 Tipagens adicionais, como por exemplo, foi incluído um objeto user com a propriedade id no objeto de request do express para ser utilizado no middleware de autenticação;
