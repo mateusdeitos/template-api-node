@@ -132,31 +132,7 @@ FLUSH PRIVILEGES;
 Para iniciar o container: docker run mariadb
 ```
 
-Após criar a base de dados e iniciá-la, crie o arquivo `.env` a partir do arquivo `.env.example` e preencha os dados referente ao banco de dados. Exemplo:
-```
-# Banco de dados
-TYPEORM_CONNECTION=mariadb
-TYPEORM_HOST=localhost
-TYPEORM_PORT=1234
-TYPEORM_USERNAME=root
-TYPEORM_PASSWORD=root
-TYPEORM_DATABASE=my_db
-
-# TypeORM
-TYPEORM_ENTITIES=./dist/modules/**/entities/typeorm/*.js
-TYPEORM_MIGRATIONS=./dist/shared/typeorm/migrations/*.js
-TYPEORM_MIGRATIONS_DIR=./src/shared/typeorm/migrations/
-
-# Porta da API
-PORT=3333
-
-# Ambiente
-NODE_ENV=dev
-
-# Segredo JWT
-SEGREDO=segredo
-
-```
+Após criar a base de dados e iniciá-la, crie o arquivo `.env` a partir do arquivo `.env.example` e preencha os dados referente ao banco de dados.
 
 ### Rode as migrations
 **Comando:** `yarn mig:run` -> Irá rodar o build e as migrations pendentes para a criação das tabelas no BD
