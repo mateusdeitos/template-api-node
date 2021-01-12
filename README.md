@@ -5,6 +5,7 @@
 * Typescript
 * TypeORM
 * Teste unitários com JEST
+* Github Actions
 
 # Introdução
 Esse repositório tem o objetivo de auxiliar no ponto de partida da criação de uma API Node. A API foi desenvolvida visando boas práticas mas melhorias são sempre bem-vindas, caso achar que algo possa ser feito melhor, abra uma PR que irei avaliar.
@@ -166,4 +167,79 @@ Agora que o BD está criado e as dependências instaladas, rode `yarn dev:server
 ```
 ✅ - back-end rodando! na porta 3333
 ✅ - Conectado ao DB
+```
+
+## Deploy
+
+Abaixo segue um exemplo de workflow para fazer o deploy na Digital Ocean
+
+```yml
+name: CI/CD Digital Ocean
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: CI Pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # This caches all of your node_modules folders throughout your repository,
+      # and busts the cache every time a yarn.lock file changes.
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.4 
+        with:
+          node-version: 14.x
+    
+      # Instalar dependências
+      - name: Install Dependencies
+        run: yarn
+        
+      # Executar build
+      - name: Run build
+        run: yarn build
+        
+      # Executar testes
+      - name: Run tests
+        run: yarn jest --coverage
+        
+  deploy:
+    name: CD Pipeline
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      # Copiar todas as pastas para a Digital Ocean
+      - name: Copy files to Digital Ocean Server, except node_modules
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          source: ".,!node_modules"
+          target: "app/bossabox-api-desafio/"
+      
+      # Dependências, migrations, reiniciar servidor
+      - name: Dependencies, migrations, server restart
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+                  cd ~/app/bossabox-api-desafio/
+                  yarn       
+                  yarn typeorm migration:run      
+                  pm2 restart bossabox-api
 ```
