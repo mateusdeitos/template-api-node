@@ -170,30 +170,32 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-        
+
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.4 
+        uses: actions/setup-node@v2.1.4
         with:
           node-version: 14.x
-    
+
       # Instalar dependências
       - name: Install Dependencies
         run: yarn
-        
+
       # Executar build
       - name: Run build
         run: yarn build
-        
-      # Executar testes
+
+      # Executar build
       - name: Run tests
         run: yarn jest --coverage
-        
+
   deploy:
     name: CD Pipeline
     runs-on: ubuntu-latest
     needs: build
-    
+
     steps:
+      - uses: actions/checkout@v2
+
       # Copiar todas as pastas para a Digital Ocean
       - name: Copy files to Digital Ocean Server, except node_modules
         uses: appleboy/scp-action@master
@@ -203,9 +205,9 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           source: ".,!node_modules"
-          target: "app/bossabox-api-desafio/"
-      
-      # Dependências, migrations, reiniciar servidor
+          target: "~/app/bossabox-api-desafio/"
+
+      # Dependências, testes, migrations, reiniciar servidor
       - name: Dependencies, migrations, server restart
         uses: appleboy/ssh-action@master
         with:
@@ -215,7 +217,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
                   cd ~/app/bossabox-api-desafio/
-                  yarn       
-                  yarn typeorm migration:run      
+                  yarn
+                  yarn build
+                  yarn typeorm migration:run
                   pm2 restart bossabox-api
+
+
 ```
