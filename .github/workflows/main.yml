@@ -35,7 +35,3 @@ jobs:
       # Executar build
       - name: Run tests
         run: yarn jest --coverage
-
-      # Executar lint geral
-      - name: Run lint
-        run: yarn lint
