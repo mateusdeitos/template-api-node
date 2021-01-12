@@ -84,8 +84,10 @@ São implementações de dependências externas, essas implementações devem re
 ### typeorm/migrations
 Local onde os arquivos de migrations são armazenados, comandos úteis:
 * Criar nova migration: `yarn typeorm migration:create -n <nomeDaMigration>`
-* Rodar as migrations pendentes: `yarn typeorm migration:run`
-* Reverter a última migration: `yarn typeorm migration:revert`
+* Rodar as migrations pendentes: `yarn mig:run`
+* Reverter a última migration: `yarn mig:revert`
+
+**OBS:** Os scripts `mig:run` e `mig:revert` rodam antes o build com o babel, isso é necessário pois as migrations são rodadas na pasta dist, dessa forma, facilita o deploy futuramente.
 
 ### utils
 Algumas funções úteis para serem utilizadas, num primeiro momento criei apenas funções para utilizar nos testes unitários, foram usados tipos genéricos, portanto, não importa a entidade que o repositório possua, essa funções irão funcionar, mas qualquer bug me avise :D
@@ -138,13 +140,10 @@ TYPEORM_PORT=1234
 TYPEORM_USERNAME=root
 TYPEORM_PASSWORD=root
 TYPEORM_DATABASE=my_db
-TYPEORM_ENTITIES=./src/modules/**/entities/typeorm/*.ts
-TYPEORM_MIGRATIONS=./src/shared/typeorm/migrations/*.ts
-TYPEORM_MIGRATIONS_DIR=./src/shared/typeorm/migrations/
 
 # TypeORM
-TYPEORM_ENTITIES=./src/modules/**/entities/typeorm/*.ts
-TYPEORM_MIGRATIONS=./src/shared/typeorm/migrations/*.ts
+TYPEORM_ENTITIES=./dist/modules/**/entities/typeorm/*.js
+TYPEORM_MIGRATIONS=./dist/shared/typeorm/migrations/*.js
 TYPEORM_MIGRATIONS_DIR=./src/shared/typeorm/migrations/
 
 # Porta da API
@@ -157,6 +156,9 @@ NODE_ENV=dev
 SEGREDO=segredo
 
 ```
+
+### Rode as migrations
+**Comando:** `yarn mig:run` -> Irá rodar o build e as migrations pendentes para a criação das tabelas no BD
 
 ### Rode a API
 Agora que o BD está criado e as dependências instaladas, rode `yarn dev:server` para rodar a API, o console irá mostrar essa mensagem:

@@ -5,14 +5,18 @@
   "author": "mateusdeitos <mate.deitos@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "dev:server": "clear && ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/server.ts",
     "start": "ts-node src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "test": "clear && jest --coverage",
-    "lint": "eslint --fix --ext .ts,.tsx ."
+    "lint": "eslint --fix --ext .ts,.tsx .",
+    "mig:run": "yarn build && typeorm migration:run",
+    "mig:revert": "yarn build && typeorm migration:revert"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.12.12",
+    "@babel/preset-typescript": "^7.12.7",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.6",
@@ -22,6 +26,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.4.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.1",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.1.0",
@@ -36,7 +41,12 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "@hapi/joi": "^17.1.1",
+    "babel-plugin-module-resolver": "^4.1.0",
     "bcryptjs": "^2.4.3",
     "celebrate": "^12.1.2",
     "class-transformer": "^0.3.1",

@@ -1,0 +1,42 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: CI Pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # This caches all of your node_modules folders throughout your repository,
+      # and busts the cache every time a yarn.lock file changes.
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
+
+      # Instalar dependências
+      - name: Install Dependencies
+        run: yarn
+
+      # Executar build
+      - name: Run build
+        run: yarn build
+
+      # Executar build
+      - name: Run tests
+        run: yarn jest --coverage
+
+      # Executar lint geral
+      - name: Run lint
+        run: yarn lint
+
