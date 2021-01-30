@@ -128,6 +128,10 @@ CREATE USER <user>@localhost IDENTIFIED BY '<senha>';
 GRANT ALL PRIVILEGES ON <database>.* TO <user>@localhost IDENTIFIED BY '<senha>';
 FLUSH PRIVILEGES;
 
+# Ajustar timezone para Brasil
+SET @@global.time_zone = '-3:00';
+QUIT
+
 
 Para iniciar o container: docker run mariadb
 ```
