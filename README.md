@@ -102,11 +102,11 @@ Após criar o repositório rode `yarn` para instalar todas as dependências.
 
 
 ```bash
-# Criação do conteiner
+# Criação do container
 docker run --name mariadb -e MYSQL_ROOT_PASSWORD=<root-pass> -p 1234:3306 --restart always -d mariadb
 # A tag "--restart always" reinicia o container automaticamente caso ele cair.
 
-# Acessar o conteiner
+# Acessar o container
 docker exec -it mariadb /bin/bash
 
 # Atualizar os pacotes
