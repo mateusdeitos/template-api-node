@@ -10,7 +10,10 @@ const config: ConnectionOptions = {
   database: process.env.TYPEORM_DATABASE,
   connectTimeout: 60000,
   acquireTimeout: 60000,
-  entities: [String(process.env.TYPEORM_ENTITIES)],
+  entities:
+    process.env.NODE_ENV === 'dev'
+      ? [String(process.env.TYPEORM_ENTITIES_DEV)]
+      : [String(process.env.TYPEORM_ENTITIES_PROD)],
   migrations: [String(process.env.TYPEORM_MIGRATIONS)],
   cli: {
     migrationsDir: String(process.env.TYPEORM_MIGRATIONS_DIR),
