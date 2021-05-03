@@ -22,6 +22,9 @@ export default class User {
   @Column('varchar')
   password: string;
 
+  @Column('varchar')
+  status: 'active' | 'inactive';
+
   @CreateDateColumn()
   created_at: Date;
 
