@@ -5,6 +5,7 @@
 * Typescript
 * TypeORM
 * Teste unitários com JEST
+* Github Actions
 
 # Introdução
 Esse repositório tem o objetivo de auxiliar no ponto de partida da criação de uma API Node. A API foi desenvolvida visando boas práticas mas melhorias são sempre bem-vindas, caso achar que algo possa ser feito melhor, abra uma PR que irei avaliar.
@@ -101,11 +102,11 @@ Após criar o repositório rode `yarn` para instalar todas as dependências.
 
 
 ```bash
-# Criação do conteiner
+# Criação do container
 docker run --name mariadb -e MYSQL_ROOT_PASSWORD=<root-pass> -p 1234:3306 --restart always -d mariadb
 # A tag "--restart always" reinicia o container automaticamente caso ele cair.
 
-# Acessar o conteiner
+# Acessar o container
 docker exec -it mariadb /bin/bash
 
 # Atualizar os pacotes
@@ -127,35 +128,15 @@ CREATE USER <user>@localhost IDENTIFIED BY '<senha>';
 GRANT ALL PRIVILEGES ON <database>.* TO <user>@localhost IDENTIFIED BY '<senha>';
 FLUSH PRIVILEGES;
 
+# Ajustar timezone para Brasil
+SET @@global.time_zone = '-3:00';
+QUIT
+
 
 Para iniciar o container: docker run mariadb
 ```
 
-Após criar a base de dados e iniciá-la, crie o arquivo `.env` a partir do arquivo `.env.example` e preencha os dados referente ao banco de dados. Exemplo:
-```
-# Banco de dados
-TYPEORM_CONNECTION=mariadb
-TYPEORM_HOST=localhost
-TYPEORM_PORT=1234
-TYPEORM_USERNAME=root
-TYPEORM_PASSWORD=root
-TYPEORM_DATABASE=my_db
-
-# TypeORM
-TYPEORM_ENTITIES=./dist/modules/**/entities/typeorm/*.js
-TYPEORM_MIGRATIONS=./dist/shared/typeorm/migrations/*.js
-TYPEORM_MIGRATIONS_DIR=./src/shared/typeorm/migrations/
-
-# Porta da API
-PORT=3333
-
-# Ambiente
-NODE_ENV=dev
-
-# Segredo JWT
-SEGREDO=segredo
-
-```
+Após criar a base de dados e iniciá-la, crie o arquivo `.env` a partir do arquivo `.env.example` e preencha os dados referente ao banco de dados.
 
 ### Rode as migrations
 **Comando:** `yarn mig:run` -> Irá rodar o build e as migrations pendentes para a criação das tabelas no BD
@@ -166,4 +147,84 @@ Agora que o BD está criado e as dependências instaladas, rode `yarn dev:server
 ```
 ✅ - back-end rodando! na porta 3333
 ✅ - Conectado ao DB
+```
+
+## Deploy
+
+Abaixo segue um exemplo de workflow para fazer o deploy na Digital Ocean
+
+```yml
+name: CI/CD Digital Ocean
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: CI Pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # This caches all of your node_modules folders throughout your repository,
+      # and busts the cache every time a yarn.lock file changes.
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.x
+
+      # Instalar dependências
+      - name: Install Dependencies
+        run: yarn
+
+      # Executar build
+      - name: Run build
+        run: yarn build
+
+      # Executar build
+      - name: Run tests
+        run: yarn jest --coverage
+
+  deploy:
+    name: CD Pipeline
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Copiar todas as pastas para a Digital Ocean
+      - name: Copy files to Digital Ocean Server, except node_modules
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          source: ".,!node_modules"
+          target: "~/app/bossabox-api-desafio/"
+
+      # Dependências, testes, migrations, reiniciar servidor
+      - name: Dependencies, migrations, server restart
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+                  cd ~/app/bossabox-api-desafio/
+                  yarn
+                  yarn build
+                  yarn typeorm migration:run
+                  pm2 restart bossabox-api
+
+
 ```
