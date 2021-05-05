@@ -6,6 +6,8 @@ import { HTTPStatusCodeEnum } from '@shared/errors/dto/HTTPStatusCodeEnum';
 import { classToClass } from 'class-transformer';
 import SendMailService from '@shared/services/SendMailService';
 import path from 'path';
+import CreateUserTokenService from '@modules/userTokens/services/CreateUserTokenService';
+import { v4 } from 'uuid';
 import { ICreateUserDTO } from '../dto/ICreateUserDTO';
 import CreateUserService from '../services/CreateUserService';
 
@@ -21,14 +23,23 @@ export default class UserController
 
     const sendMailService = container.resolve(SendMailService);
 
+    const createActivationTokenService = container.resolve(
+      CreateUserTokenService,
+    );
+
+    const activationToken = await createActivationTokenService.execute({
+      id_user: newUser.id,
+      token: v4(),
+    });
+
     await sendMailService.execute({
       to: {
         email: newUser.email,
         name: newUser.nome,
       },
       from: {
-        email: 'oi@oi.com',
-        name: 'Oi',
+        email: 'myteam@team.com',
+        name: 'My Team',
       },
       subject: 'Active your account',
       template: {
@@ -40,7 +51,8 @@ export default class UserController
         ),
         variables: {
           name: newUser.nome,
-          url: 'http://localhost:3000/activate?token=ahuiaweh9123128937as',
+          // This should be the url of the web app
+          url: `${process.env.FRONTEND_URL}/activate?token=${activationToken}`,
         },
       },
     });

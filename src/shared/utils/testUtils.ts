@@ -27,3 +27,14 @@ export const findEntityInRepositoryByProp = <T>(
   const { propName, propValue } = props;
   return repository.find(entity => entity[propName] === propValue);
 };
+
+export const removeEntityFromRepository = <T extends idRequired>(
+  repository: T[],
+  entity: T,
+): void => {
+  const { id } = entity;
+  if (id) {
+    const index = repository.findIndex(obj => obj.id === id);
+    repository.splice(index, 1);
+  }
+};

@@ -22,7 +22,7 @@ export default class User {
   @Column('varchar')
   password: string;
 
-  @Column('varchar')
+  @Column({ type: 'varchar', default: 'inactive' })
   status: 'active' | 'inactive';
 
   @CreateDateColumn()
