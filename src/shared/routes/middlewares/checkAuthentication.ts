@@ -9,11 +9,11 @@ interface TokenPayload {
   sub: string;
 }
 
-export default function checkAuthentication(
+export const checkAuthentication = (
   request: Request,
   _: Response,
   next: NextFunction,
-): void {
+): void => {
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
@@ -38,4 +38,4 @@ export default function checkAuthentication(
   } catch (error) {
     throw new ForbiddenRouteException('Invalid JWT token.', 'FORBIDDEN');
   }
-}
+};
