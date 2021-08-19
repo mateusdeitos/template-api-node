@@ -12,8 +12,8 @@ export default {
   driver: process.env.MAIL_DRIVER || 'ethereal',
   defaults: {
     from: {
-      email: 'contato@pickbus.com.br',
-      name: 'Equipe Pickbus',
+      email: 'contato@minhaempresa.com.br',
+      name: 'Equipe Top',
     },
   },
 } as IMailConfig;
