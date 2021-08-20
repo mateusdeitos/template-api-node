@@ -1,3 +1,4 @@
+import { bodyValidationMiddleware } from '@shared/routes/middlewares/bodyValidationMiddleware';
 import { celebrate } from 'celebrate';
 import { Router } from 'express';
 import AuthenticationController from '../controllers/AuthenticationController';
@@ -8,12 +9,7 @@ const authController = new AuthenticationController();
 
 authRouter.post(
 	'/',
-	celebrate(
-		{
-			body: UserValidationSchema.login,
-		},
-		{ abortEarly: false },
-	),
+	bodyValidationMiddleware(UserValidationSchema.login),
 	authController.store,
 );
 
