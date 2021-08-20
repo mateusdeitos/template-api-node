@@ -14,7 +14,6 @@ server.use(cors());
 server.use(express.json());
 server.use(routes);
 
-server.use(errors());
 server.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {
