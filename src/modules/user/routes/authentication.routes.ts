@@ -1,5 +1,4 @@
 import { bodyValidationMiddleware } from '@shared/routes/middlewares/bodyValidationMiddleware';
-import { celebrate } from 'celebrate';
 import { Router } from 'express';
 import AuthenticationController from '../controllers/AuthenticationController';
 import { UserValidationSchema } from './validations/UserValidations';
