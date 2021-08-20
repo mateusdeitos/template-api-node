@@ -12,54 +12,55 @@ import { ICreateUserDTO } from '../dto/ICreateUserDTO';
 import CreateUserService from '../services/CreateUserService';
 
 export default class UserController
-  extends BaseController
-  implements IControllers {
-  public async store(request: Request, response: Response): Promise<Response> {
-    const userData: ICreateUserDTO = request.body;
+	extends BaseController
+	implements IControllers
+{
+	public async store(request: Request, response: Response): Promise<Response> {
+		const userData: ICreateUserDTO = request.body;
 
-    const createUserService = container.resolve(CreateUserService);
+		const createUserService = container.resolve(CreateUserService);
 
-    const newUser = await createUserService.execute(userData);
+		const newUser = await createUserService.execute(userData);
 
-    const sendMailService = container.resolve(SendMailService);
+		const sendMailService = container.resolve(SendMailService);
 
-    const createActivationTokenService = container.resolve(
-      CreateUserTokenService,
-    );
+		const createActivationTokenService = container.resolve(
+			CreateUserTokenService,
+		);
 
-    const activationToken = await createActivationTokenService.execute({
-      id_user: newUser.id,
-      token: v4(),
-    });
+		const activationToken = await createActivationTokenService.execute({
+			id_user: newUser.id,
+			token: v4(),
+		});
 
-    await sendMailService.execute({
-      to: {
-        email: newUser.email,
-        name: newUser.nome,
-      },
-      from: {
-        email: 'myteam@team.com',
-        name: 'My Team',
-      },
-      subject: 'Active your account',
-      template: {
-        file: path.resolve(
-          __dirname,
-          '..',
-          'templates',
-          'mail_activate_user.hbs',
-        ),
-        variables: {
-          name: newUser.nome,
-          // This should be the url of the web app
-          url: `${process.env.FRONTEND_URL}/activate?token=${activationToken}`,
-        },
-      },
-    });
+		await sendMailService.execute({
+			to: {
+				email: newUser.email,
+				name: newUser.nome,
+			},
+			from: {
+				email: 'myteam@team.com',
+				name: 'My Team',
+			},
+			subject: 'Active your account',
+			template: {
+				file: path.resolve(
+					__dirname,
+					'..',
+					'templates',
+					'mail_activate_user.hbs',
+				),
+				variables: {
+					name: newUser.nome,
+					// This should be the url of the web app
+					url: `${process.env.FRONTEND_URL}/activate?token=${activationToken}`,
+				},
+			},
+		});
 
-    return super.getResponse(
-      request,
-      response.status(HTTPStatusCodeEnum.SUCCESS).json(classToClass(newUser)),
-    );
-  }
+		return super.getResponse(
+			request,
+			response.status(HTTPStatusCodeEnum.SUCCESS).json(classToClass(newUser)),
+		);
+	}
 }

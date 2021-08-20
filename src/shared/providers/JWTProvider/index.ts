@@ -4,6 +4,6 @@ import JsonWebTokenProvider from './implementations/JsonWebTokenProvider';
 
 export const JWT_PROVIDER_TOKEN = 'JWTProvider';
 container.registerSingleton<IJWTProvider>(
-  JWT_PROVIDER_TOKEN,
-  JsonWebTokenProvider,
+	JWT_PROVIDER_TOKEN,
+	JsonWebTokenProvider,
 );

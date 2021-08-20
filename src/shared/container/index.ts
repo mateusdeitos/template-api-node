@@ -8,10 +8,10 @@ import UserTokenRepository from '@modules/userTokens/repositories/typeorm/UserTo
 export const USER_REPOSITORY_TOKEN = 'UserRepository';
 export const USER_TOKEN_REPOSITORY_TOKEN = 'UserTokenRepository';
 container.registerSingleton<IUserRepository>(
-  USER_REPOSITORY_TOKEN,
-  UserRepository,
+	USER_REPOSITORY_TOKEN,
+	UserRepository,
 );
 container.registerSingleton<IUserTokenRepository>(
-  USER_TOKEN_REPOSITORY_TOKEN,
-  UserTokenRepository,
+	USER_TOKEN_REPOSITORY_TOKEN,
+	UserTokenRepository,
 );

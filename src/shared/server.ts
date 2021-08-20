@@ -18,6 +18,6 @@ server.use(errors());
 server.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`✅ - back-end rodando! na porta ${process.env.PORT}`);
+	// eslint-disable-next-line no-console
+	console.log(`✅ - back-end rodando! na porta ${process.env.PORT}`);
 });

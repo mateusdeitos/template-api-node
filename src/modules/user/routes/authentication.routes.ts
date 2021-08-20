@@ -7,14 +7,14 @@ const authRouter = Router();
 const authController = new AuthenticationController();
 
 authRouter.post(
-  '/',
-  celebrate(
-    {
-      body: UserValidationSchema.login,
-    },
-    { abortEarly: false },
-  ),
-  authController.store,
+	'/',
+	celebrate(
+		{
+			body: UserValidationSchema.login,
+		},
+		{ abortEarly: false },
+	),
+	authController.store,
 );
 
 export default authRouter;

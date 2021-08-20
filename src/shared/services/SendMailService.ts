@@ -5,12 +5,12 @@ import ISendMailDTO from '@shared/providers/MailProvider/dtos/ISendMailDTO';
 
 @injectable()
 export default class SendMailService {
-  constructor(
-    @inject(MAIL_PROVIDER_TOKEN)
-    private mailProvider: IMailProvider,
-  ) {}
+	constructor(
+		@inject(MAIL_PROVIDER_TOKEN)
+		private mailProvider: IMailProvider,
+	) {}
 
-  public async execute({ ...data }: ISendMailDTO): Promise<void> {
-    return this.mailProvider.send({ ...data });
-  }
+	public async execute({ ...data }: ISendMailDTO): Promise<void> {
+		return this.mailProvider.send({ ...data });
+	}
 }
