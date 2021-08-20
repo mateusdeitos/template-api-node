@@ -1,5 +1,5 @@
 {
-  "name": "bossabox-api",
+  "name": "template-api-node",
   "version": "1.0.0",
   "main": "index.js",
   "author": "mateusdeitos <mate.deitos@hotmail.com>",
@@ -7,7 +7,6 @@
   "scripts": {
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "dev:server": "clear && ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/server.ts",
-    "start": "ts-node src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "test": "clear && jest --coverage",
     "lint": "eslint --fix --ext .ts,.tsx .",
