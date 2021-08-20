@@ -1,5 +1,5 @@
 ---
-to: src/modules/<%-h.changeCase.lower(name)%>/services/Create<%-h.changeCase.title(name)%>Service.ts
+to: src/modules/<%-module%>/services/Create<%-h.changeCase.title(name)%>Service.ts
 force: true
 ---
 import { <%-h.changeCase.upper(name)%>_REPOSITORY_TOKEN } from '@shared/container';

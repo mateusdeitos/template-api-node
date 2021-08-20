@@ -1,5 +1,5 @@
 ---
-to: src/modules/<%-h.changeCase.lower(name)%>/repositories/typeorm/<%-h.changeCase.title(name)%>Repository.ts
+to: src/modules/<%-module%>/repositories/typeorm/<%-h.changeCase.title(name)%>Repository.ts
 force: true
 ---
 import { ICreate<%-h.changeCase.title(name)%>DTO } from '@modules/<%-h.changeCase.lower(name)%>/dto/ICreate<%-h.changeCase.title(name)%>DTO';

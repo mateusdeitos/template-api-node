@@ -1,5 +1,5 @@
 ---
-to: src/modules/<%-h.changeCase.lower(name)%>/services/tests/Create<%-h.changeCase.title(name)%>Service.spec.ts
+to: src/modules/<%-module%>/services/tests/Create<%-h.changeCase.title(name)%>Service.spec.ts
 force: true
 ---
 import { <%-h.changeCase.title(name)%> } from '@modules/<%-h.changeCase.lower(name)%>/entities/typeorm/<%-h.changeCase.title(name)%>';

@@ -1,5 +1,5 @@
 ---
-to: src/modules/<%-h.changeCase.lower(name)%>/routes/<%-h.changeCase.lower(name)%>.routes.ts
+to: src/modules/<%-module%>/routes/<%-h.changeCase.lower(name)%>.routes.ts
 force: true
 ---
 import { Router } from 'express';

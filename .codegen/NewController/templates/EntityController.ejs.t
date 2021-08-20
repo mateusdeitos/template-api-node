@@ -1,5 +1,5 @@
 ---
-to: src/modules/<%-h.changeCase.lower(name)%>/controllers/<%-h.changeCase.title(name)%>Controller.ts
+to: src/modules/<%-module%>/controllers/<%-h.changeCase.title(name)%>Controller.ts
 force: true
 ---
 import BaseController from '@shared/controllers/BaseController';

@@ -1,5 +1,5 @@
 ---
-to: src/modules/<%-h.changeCase.lower(name)%>/entities/typeorm/<%-h.changeCase.title(name)%>.ts
+to: src/modules/<%-module%>/entities/typeorm/<%-h.changeCase.title(name)%>.ts
 force: true
 ---
 <%-imports%>
